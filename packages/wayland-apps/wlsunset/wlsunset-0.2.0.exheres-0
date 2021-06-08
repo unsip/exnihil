@@ -1,0 +1,18 @@
+require meson
+
+SUMMARY="Day/night gamma adjustments for Wayland."
+HOMEPAGE="https://git.sr.ht/~kennylevinsen/wlsunset"
+DOWNLOADS="https://git.sr.ht/~kennylevinsen/wlsunset/archive/${PV}.tar.gz"
+
+LICENCES="MIT"
+PLATFORMS="~amd64"
+SLOT="0"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+        app-doc/scdoc
+    build+run:
+        sys-libs/wayland
+        sys-libs/wayland-protocols
+"

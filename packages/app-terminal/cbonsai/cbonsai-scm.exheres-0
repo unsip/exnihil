@@ -1,0 +1,32 @@
+# Copyright 2021 Andrey Turbov <unsip@tutamail.com>
+# Distributed under the terms of the GNU General Public License v3
+
+require gitlab [ user=jallbrit ]
+
+SUMMARY="Grow bonsai trees in your terminal."
+DESCRIPTION="
+    cbonsai is a bonsai tree generator, written in C using ncurses. It intelligently creates, colors,
+    and positions a bonsai tree, and is entirely configurable via CLI options.
+"
+HOMEPAGE="https://gitlab.com/jallbrit/cbonsai"
+DOWNLOADS=""
+
+LICENCES="GPL-3"
+PLATFORMS="~amd64 ~x86"
+SLOT=0
+
+DEPENDENCIES="
+    build:
+        virtual/pkg-config
+    build+run:
+        sys-libs/ncurses
+"
+
+DEFAULT_SRC_COMPILE_PARAMS=(
+    CC=$(exhost --target)-cc
+    PREFIX=/usr/$(exhost --target)
+)
+
+DEFAULT_SRC_INSTALL_PARAMS=(
+    PREFIX=/usr/$(exhost --target)
+)

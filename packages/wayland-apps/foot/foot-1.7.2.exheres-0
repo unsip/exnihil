@@ -1,0 +1,35 @@
+# Copyright 2020 Danilo Spinella <danyspin97@protonmail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require meson [ meson_minimum_version=0.53 ]
+
+SUMMARY="A fast, lightweight and minimalistic Wayland terminal emulator"
+HOMEPAGE="https://codeberg.org/dnkl/${PN}"
+DOWNLOADS="${HOMEPAGE}/archive/${PV}.tar.gz"
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64"
+
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+        app-doc/scdoc
+        sys-libs/ncurses
+    build+run:
+        dev-libs/tllist[>=1.0.4]
+        media-libs/fcft[>=2.3.0][<3.0]
+        media-libs/fontconfig
+        sys-libs/wayland
+        sys-libs/wayland-protocols
+        x11-libs/libxkbcommon[wayland]
+        x11-libs/pixman:1
+"
+
+MESON_SOURCE="${WORKBASE}"/${PN}
+
+MESON_SRC_CONFIGURE_PARAMS=(
+    -Dime=true
+)
+

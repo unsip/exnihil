@@ -1,0 +1,20 @@
+# Copyright 2018-2019 Danilo Spinella <danyspin97@protonmail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require github [ user='emersion' tag=v${PV} ] meson
+
+SUMMARY="Select a region in a Wayland compositor"
+
+LICENCES="MIT"
+SLOT="0"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+        app-doc/scdoc
+    build+run:
+        sys-libs/wayland
+        sys-libs/wayland-protocols[>=1.14]
+        x11-libs/cairo
+"
+

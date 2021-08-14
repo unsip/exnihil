@@ -1,0 +1,33 @@
+# Copyright 2020 Danilo Spinella <danyspin97@protonmail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require github [ user='jtheoof' tag=v${PV} ] meson
+
+SUMMARY="Grab images from a Wayland compositor."
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS="
+    libnotify
+"
+
+DEPENDENCIES="
+    build:
+        app-doc/scdoc
+    build+run:
+        x11-libs/cairo
+        x11-libs/gtk+[>=3.20.0]
+        x11-libs/pango
+        libnotify? ( x11-libs/libnotify )
+"
+
+MESON_SRC_CONFIGURE_PARAMS=(
+    -Dman-pages=enabled
+)
+
+
+MESON_SRC_CONFIGURE_OPTION_FEATURES=(
+    libnotify
+)
+

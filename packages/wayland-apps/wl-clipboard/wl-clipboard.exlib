@@ -1,0 +1,43 @@
+# Copyright 2018 Danilo Spinella <danyspin97@protonmail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require github [ user='bugaevc' tag=v${PV} ]
+require bash-completion zsh-completion meson
+
+export_exlib_phases src_prepare src_install
+
+SUMMARY="Command-line copy/paste utilities for Wayland"
+
+LICENCES="GPL-3"
+SLOT="0"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+        sys-libs/wayland
+        sys-libs/wayland-protocols[>=1.12]
+    run:
+        x11-apps/xdg-utils
+"
+
+BASH_COMPLETIONS=(
+    "${MESON_SOURCE}"/completions/bash/wl-copy
+    "${MESON_SOURCE}"/completions/bash/wl-paste
+)
+
+MESON_SRC_CONFIGURE_OPTIONS=(
+    "zsh-completion -Dzshcompletiondir=${ZSHCOMPLETIONDIR} -Dzshcompletiondir=no"
+)
+
+wl-clipboard_src_prepare() {
+    edo sed -i '/bash/d' "${MESON_SOURCE}"/completions/meson.build
+
+    meson_src_prepare
+}
+
+wl-clipboard_src_install() {
+    meson_src_install
+
+    bash-completion_src_install
+}
+

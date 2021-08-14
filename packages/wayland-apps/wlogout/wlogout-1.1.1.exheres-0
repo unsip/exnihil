@@ -1,0 +1,37 @@
+# Copyright 2020 Danilo Spinella <danyspin97@protonmail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require github [ user='ArtsyMacaw' ] meson bash-completion zsh-completion
+
+SUMMARY="A wayland based logout menu"
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+        app-doc/scdoc
+    build+run:
+        gnome-desktop/gobject-introspection
+        x11-libs/gtk+[wayland]
+        wayland-libs/gtk-layer-shell
+    recommendation:
+        wayland-apps/swaylock
+"
+
+MESON_SRC_CONFIGURE_PARAMS=(
+    -Dfish-completions=false
+    -Dman-pages=enabled
+)
+
+MESON_SRC_CONFIGURE_OPTION_SWITCHES=(
+    'bash-completion'
+    'zsh-completion'
+)
+
+src_install() {
+    meson_src_install
+}
+

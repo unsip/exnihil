@@ -1,0 +1,79 @@
+# Copyright 2019-2020 Danilo Spinella <danyspin97@protonmail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require github [ user='eXeC64' tag=v${PV} ] meson
+
+SUMMARY="Image viewer for X11/Wayland"
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64"
+
+MYOPTIONS="
+    (
+        heif [[ description = [ Adds support for HEIF and AVIF formats ] ]]
+        jpeg [[ requires = [ providers: jpeg-turbo ] ]]
+        png
+        svg
+        tiff
+    ) [[ number-selected = at-least-one ]]
+    ( X wayland ) [[ number-selected = at-least-one ]]
+    ( providers: jpeg-turbo )
+"
+
+DEPENDENCIES="
+    build:
+        app-doc/asciidoc
+        dev-util/cmocka [[ note = [ Used to build the tests ] ]]
+    build+run:
+        dev-libs/icu
+        dev-libs/inih
+        x11-dri/mesa[X]
+        x11-libs/libxkbcommon[X?]
+        x11-libs/pango
+        heif? ( media-libs/libheif )
+        jpeg? ( media-libs/libjpeg-turbo )
+        png? (
+            media-libs/libpng:=
+        )
+        tiff? (
+            media-libs/tiff
+        )
+        svg? (
+            gnome-desktop/librsvg:2[>=2.44]
+        )
+        X? (
+            x11-dri/glu
+            x11-libs/libxcb
+            x11-server/xorg-server
+        )
+        wayland? (
+            sys-libs/wayland
+        )
+"
+
+MESON_SRC_CONFIGURE_PARAMS=(
+    # Unpackaged dependencies
+    -Dfreeimage=disabled
+    -Dlibnsgif=disabled
+)
+
+MESON_SRC_CONFIGURE_OPTION_FEATURES=(
+    'heif libheif'
+    'jpeg libjpeg'
+    'png libpng'
+    'svg librsvg'
+    'tiff libtiff'
+)
+
+src_configure() {
+    local windows="-Dwindows="
+    if option X && option wayland; then
+        windows+="all"
+    elif option X; then
+        windows+="x11"
+    else
+        windows+="wayland"
+    fi
+    meson_src_configure ${windows}
+}

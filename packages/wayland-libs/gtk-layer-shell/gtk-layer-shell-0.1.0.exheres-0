@@ -1,0 +1,27 @@
+# Copyright 2019 Danilo Spinella <danyspin97@protonmail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require github [ user=wmww tag=v${PV} ] meson
+
+SUMMARY="A library to create panels and other desktop components for Wayland"
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+        virtual/pkg-config
+    build+run:
+        sys-libs/wayland[>=1.10.0]
+        x11-libs/gtk+:3[gobject-introspection][wayland]
+"
+
+BUGS_TO="danyspin97@protonmail.com"
+
+MESON_SRC_CONFIGURE_PARAMS=(
+    -Ddocs=false
+    -Dexamples=false
+)
+

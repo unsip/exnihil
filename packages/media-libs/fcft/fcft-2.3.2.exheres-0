@@ -1,0 +1,37 @@
+# Copyright 2020 Danilo Spinella <danyspin97@protonmail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require meson [ meson_minimum_version=0.54 ]
+
+SUMMARY="A simple library for font loading and glyph rasterization"
+HOMEPAGE="https://codeberg.org/dnkl/${PN}"
+DOWNLOADS="${HOMEPAGE}/archive/${PV}.tar.gz"
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64"
+
+MYOPTIONS="
+    harfbuzz
+"
+
+DEPENDENCIES="
+    build+run:
+        media-libs/fontconfig
+        media-libs/freetype:2
+        dev-libs/tllist[>=1.0.1]
+        x11-libs/pixman:1
+        harfbuzz? ( x11-libs/harfbuzz )
+"
+
+MESON_SOURCE="${WORKBASE}"/${PN}
+
+MESON_SRC_CONFIGURE_PARAMS=(
+    # Needs a font with an emoji installed
+    -Dtest-text-shaping=false
+)
+
+MESON_SRC_CONFIGURE_OPTION_FEATURES=(
+    'harfbuzz text-shaping'
+)
+

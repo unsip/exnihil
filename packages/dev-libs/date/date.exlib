@@ -1,0 +1,35 @@
+# Copyright 2020 Danilo Spinella <danyspin97@protonmail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require github [ user='HowardHinnant' tag=v${PV} ] cmake
+
+SUMMARY="A date and time library based on the C++11/14/17 <chrono> header"
+
+LICENCES="MIT"
+SLOT="0"
+
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+DEFAULT_SRC_PREPARE_PATCHES=(
+    "${FILES}"/0001-CMakeLists.txt-output-date.pc-for-pkg-config.patch
+)
+
+CMAKE_SRC_CONFIGURE_PARAMS=(
+    -DBUILD_SHARED_LIBS:BOOL=ON
+    -DBUILD_TZ_LIB:BOOL=ON
+    -DCOMPILE_WITH_C_LOCALE:BOOL=OFF
+    -DDISABLE_STRING_VIEW:BOOL=OFF
+    -DMANUAL_TZ_DB:BOOL=OFF
+    -DUSE_SYSTEM_TZ_DB:BOOL=ON
+    -DUSE_TZ_DB_IN_DOT:BOOL=OFF
+)
+
+CMAKE_SRC_CONFIGURE_TESTS=(
+    '-DENABLE_DATE_TESTING:BOOL=ON -DENABLE_DATE_TESTING:BOOL=OFF'
+)
+
+# Test suite fails
+RESTRICT="test"
+

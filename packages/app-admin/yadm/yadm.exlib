@@ -1,0 +1,68 @@
+# Copyright 2018-2020 Danilo Spinella <danyspin97@protonmail.com>
+# Distributed under the terms of the GNU General Public License v3
+# Based in part upon 'yadm-1.12.0.ebuild', which is:
+#     Copyright 1999-2017 Gentoo Foundation
+
+require github [ user='TheLocehiliosan' ]
+require bash-completion zsh-completion
+
+export_exlib_phases src_compile src_test src_install
+
+SUMMARY="Yet Another Dotfiles Manager"
+HOMEPAGE="https://yadm.io/"
+
+LICENCES="GPL-3"
+SLOT="0"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-scm/git
+    suggestion:
+        app-crypt/gnupg [[
+            description = [ Support for encrypting confidential files ]
+        ]]
+    test:
+        app-crypt/gnupg
+        dev-python/pytest
+"
+
+# Tests require many weird dependencies and still fail
+RESTRICT="test"
+
+BASH_COMPLETIONS=( "completion/${PN}.bash_completion" )
+ZSH_COMPLETIONS=( "completion/${PN}.zsh_completion _yadm" )
+
+yadm_src_compile() {
+    :
+}
+
+yadm_src_test() {
+    # Allow gnupg to run
+    local gpg_socket="unix:${TEMP}pytest-of-${USER}/pytest-0/gnupghome0/S.gpg-agent"
+    esandbox allow_net "${gpg_socket}"
+    esandbox allow_net --connect "${gpg_socket}"
+
+    local -a pylint_skip=(
+        "not test_pylint and not test_flake8 and not yamllint" # tests for tests!
+        "and not j2cli and not envtpl and not esh and not test_alt_templates" # unpackaged
+    )
+    edo pytest -v \
+        -k "${pylint_skip[*]}"
+
+    esandbox disallow_net "${gpg_socket}"
+}
+
+yadm_src_install() {
+    dobin ${PN}
+    doman ${PN}.1
+
+    insinto /usr/share/${PN}
+    doins -r contrib
+
+    emagicdocs
+
+    bash-completion_src_install
+    zsh-completion_src_install
+}
+

@@ -1,0 +1,29 @@
+# Copyright 2019-2020 Danilo Spinella <danyspin97@protonmail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require meson
+
+SUMMARY="A launcher/menu program for wlroots based wayland compositors"
+HOMEPAGE="https://hg.sr.ht/~scoopta/${PN}"
+
+if ! ever is_scm; then
+    DOWNLOADS="${HOMEPAGE}/archive/v${PV}.tar.gz"
+    MESON_SOURCE="${WORKBASE}"/${PN}-v${PV}
+else
+    SCM_REPOSITORY="https://hg.sr.ht/~scoopta/${PN}"
+    require scm-hg
+fi
+
+LICENCES="GPL-3"
+SLOT="0"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+        virtual/pkg-config
+    build+run:
+        dev-libs/glib:2 [[ note = [ Required for enable_drun ] ]]
+        sys-libs/wayland
+        x11-libs/gtk+:3
+"
+

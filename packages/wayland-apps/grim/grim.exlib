@@ -1,0 +1,35 @@
+# Copyright 2018-2019 Danilo Spinella <danyspin97@protonmail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require github [ user='emersion' release=v${PV} suffix=tar.gz ] meson
+
+SUMMARY="Grab images from a Wayland compositor."
+
+LICENCES="MIT"
+SLOT="0"
+MYOPTIONS="
+    jpeg
+    jpeg? (
+        ( providers: ijg-jpeg jpeg-turbo )
+            [[ number-selected = exactly-one ]]
+    )
+"
+
+DEPENDENCIES="
+    build:
+        app-doc/scdoc
+    build+run:
+        sys-libs/wayland-protocols[>=1.14]
+        x11-libs/cairo
+        providers:ijg-jpeg? ( media-libs/jpeg:= )
+        providers:jpeg-turbo? ( media-libs/libjpeg-turbo )
+"
+
+MESON_SRC_CONFIGURE_PARAMS=(
+    -Dman-pages=enabled
+)
+
+MESON_SRC_CONFIGURE_OPTION_FEATURES=(
+    jpeg
+)
+

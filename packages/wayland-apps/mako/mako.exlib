@@ -1,0 +1,35 @@
+# Copyright 2018-2019 Danilo Spinella <danyspin97@protonmail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require github [ user='emersion' tag=v${PV} ] meson
+
+SUMMARY="A lightweight Wayland notification daemon"
+
+LICENCES="MIT"
+SLOT="0"
+MYOPTIONS="
+    ( providers: elogind systemd ) [[ number-selected = exactly-one ]]
+"
+
+DEPENDENCIES="
+    build:
+        app-doc/scdoc[>=1.9.7]
+    build+run:
+        dev-libs/glib:2
+        sys-libs/wayland
+        sys-libs/wayland-protocols[>=1.14]
+        x11-libs/cairo
+        x11-libs/gtk+:3
+        x11-libs/gdk-pixbuf:2.0
+        x11-libs/pango
+        providers:elogind? (
+            sys-auth/elogind[=238.3|>=239.2]
+        )
+        providers:systemd? ( sys-apps/systemd )
+"
+
+MESON_SRC_CONFIGURE_PARAMS=(
+    -Dman-pages=enabled
+    -Dicons=enabled
+)
+

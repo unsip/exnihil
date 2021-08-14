@@ -1,4 +1,5 @@
 # Copyright 2018-2019 Danilo Spinella <danyspin97@protonmail.com>
+# Copyright 2021 Andrey Turbov <unsip@tutamail.com>
 # Distributed under the terms of the GNU General Public License v2
 
 require github [ user='emersion' release=v${PV} suffix=tar.gz ] meson

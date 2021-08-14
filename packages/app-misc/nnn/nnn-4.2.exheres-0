@@ -1,0 +1,61 @@
+# Copyright 2018-2020 Danilo Spinella <danyspin97@protonmail.com>
+# Copyright 2021 Andrey Turbov <unsip@tutamail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require github [ user='jarun' tag=v${PV} ]
+
+SUMMARY="The fastest terminal file manager ever written."
+DESCRIPTION="It's extremely flexible - integrates with your DE and favourite
+    GUI utilities, works with the desktop opener, supports bookmarks, has smart
+    navigation shortcuts, navigate-as-you-type mode, disk usage analyzer mode,
+    comprehensive file details and much more."
+
+LICENCES="BSD-2"
+SLOT="0"
+PLATFORMS="~amd64"
+
+MYOPTIONS="
+    pcre
+    readline
+"
+
+DEPENDENCIES="
+    build:
+        virtual/pkg-config
+    build+run:
+        sys-libs/ncurses
+        pcre? ( dev-libs/pcre )
+        readline? ( sys-libs/readline:= )
+    run:
+        x11-apps/xdg-utils
+"
+
+src_compile() {
+    local args=(
+        PKG_CONFIG=$(exhost --tool-prefix)pkg-config
+        O_NOLOC=0
+        O_NOMOUSE=0
+        O_NOBATCH=1
+        # Requires icons-in-terminal
+        O_ICONS=0
+        O_QSORT=1
+        $(option pcre && echo O_PCRE=1 || echo O_PCRE=0)
+        $(option readline && echo O_NORL=0 || echo O_NORL=1)
+    )
+
+    emake "${args[@]}"
+}
+
+src_install() {
+    local args=(
+        PKG_CONFIG=$(exhost --tool-prefix)pkg-config
+        PREFIX=/usr/$(exhost --target)
+        MANPREFIX=/usr/share/man
+        DESKTOPPREFIX=/usr/share/applications
+    )
+
+    emake install install-desktop DESTDIR="${IMAGE}" "${args[@]}"
+
+    emagicdocs
+}
+

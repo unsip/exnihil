@@ -1,0 +1,52 @@
+# Copyright 2018 Danilo Spinella <danyspin97@protonmail.com>
+# Copyright 2021 Andrey Turbov <unsip@tutamail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require github [ user='dylanaraps' ]
+
+SUMMARY="A fast, highly customizable system info script"
+DESCRIPTION="Neofetch is a CLI system information tool written in BASH. Neofetch displays information about your system next to an image, your OS logo, or any ASCII file of your choice."
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64"
+
+MYOPTIONS=""
+
+DEPENDENCIES="
+    suggestion:
+        sys-apps/pciutils [[ description = [ Use system info information,
+                            like GPU info ] ]]
+        x11-apps/xprop [[ description = [ Use Desktop Environment and Window
+                          Manager info ] ]]
+        (
+            gnome-desktop/gnome-screenshot
+            media-gfx/ImageMagick
+            media-gfx/scrot
+            media-libs/imlib2
+        ) [[
+            *group-name = [ screenshot ]
+            *description = [ Automatically take a screenshot ]
+        ]]
+        (
+            media-gfx/ImageMagick
+            media-libs/libcaca
+            net-www/w3m[imlib2]
+            x11-apps/xprop
+        ) [[
+            *group-name = [ inline-image ]
+            *description = [ Make inline image mode works ]
+        ]]
+        (
+            media-gfx/feh
+            x11-apps/nitrogen
+        ) [[
+            *group-name = [ wallpaper ]
+            *description = [ Use current wallpaper inside neofetch box ]
+        ]]
+"
+
+DEFAULT_SRC_INSTALL_PARAMS=(
+    PREFIX=/usr/$(exhost --target)
+    MANDIR=/usr/share/man
+)

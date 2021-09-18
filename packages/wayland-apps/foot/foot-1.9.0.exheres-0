@@ -1,0 +1,52 @@
+# Copyright 2020 Danilo Spinella <danyspin97@protonmail.com>
+# Copyright 2021 Andrey Turbov <unsip@tutamail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require meson [ meson_minimum_version=0.53 ]
+require bash-completion
+require ninja
+
+SUMMARY="A fast, lightweight and minimalistic Wayland terminal emulator"
+HOMEPAGE="https://codeberg.org/dnkl/${PN}"
+DOWNLOADS="${HOMEPAGE}/archive/${PV}.tar.gz"
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64"
+
+# TODO:
+# - Add graphene-clustering option (requires libutf8proc dep).
+# - Add PGO option
+MYOPTIONS="
+    docs [[ description = [ Install man pages ] presumed = true ]]
+    ime [[ description = [
+        Use input method engine (IME) which generates characters that are not natively available on
+        keyboard by using input sequences from keystrokes or mouse movements
+    ] presumed = true ]]
+"
+
+DEPENDENCIES="
+    build:
+        docs? ( app-doc/scdoc )
+        sys-libs/ncurses
+        dev-libs/tllist[>=1.0.4]
+    build+run:
+        media-libs/fcft[>=2.4.0][<3.0]
+        media-libs/fontconfig
+        sys-libs/wayland
+        sys-libs/wayland-protocols
+        x11-libs/libxkbcommon[wayland]
+        x11-libs/pixman:1
+    recommendation:
+        x11-apps/xdg-utils [[ description = [ Default URL launcher ] ]]
+        x11-libs/libnotify  [[ description = [ Default desktop notifications ] ]]
+"
+
+MESON_SOURCE="${WORKBASE}"/${PN}
+
+MESON_SRC_CONFIGURE_OPTION_FEATURES=(
+    "docs"
+)
+MESON_SRC_CONFIGURE_OPTION_SWITCHES=(
+    "ime"
+)

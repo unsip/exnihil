@@ -1,4 +1,5 @@
 # Copyright 2020 Danilo Spinella <danyspin97@protonmail.com>
+# Copyright 2021 Andrey Turbov <unsip@tutamail.com>
 # Distributed under the terms of the GNU General Public License v2
 
 require meson [ meson_minimum_version=0.54 ]
@@ -12,14 +13,16 @@ SLOT="0"
 PLATFORMS="~amd64"
 
 MYOPTIONS="
-    harfbuzz
+    harfbuzz [[ description = [ Text-shaping support ] ]]
 "
 
 DEPENDENCIES="
+    build:
+        app-doc/scdoc
+        dev-libs/tllist[>=1.0.1]
     build+run:
         media-libs/fontconfig
         media-libs/freetype:2
-        dev-libs/tllist[>=1.0.1]
         x11-libs/pixman:1
         harfbuzz? ( x11-libs/harfbuzz )
 "

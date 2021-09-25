@@ -4,14 +4,12 @@
 
 require meson [ meson_minimum_version=0.53 ]
 require bash-completion
-require ninja
 
 SUMMARY="A fast, lightweight and minimalistic Wayland terminal emulator"
 HOMEPAGE="https://codeberg.org/dnkl/${PN}"
 DOWNLOADS="${HOMEPAGE}/archive/${PV}.tar.gz"
 
-LICENCES="MIT"
-SLOT="0"
+LICENCES="MIT" SLOT="0"
 PLATFORMS="~amd64"
 
 # TODO:
@@ -42,11 +40,20 @@ DEPENDENCIES="
         x11-libs/libnotify  [[ description = [ Default desktop notifications ] ]]
 "
 
-MESON_SOURCE="${WORKBASE}"/${PN}
-
+MESON_SOURCE="${WORKBASE}/${PN}"
+MESON_SRC_CONFIGURE_PARAMS=(
+    "-Dterminfo=disabled"
+)
 MESON_SRC_CONFIGURE_OPTION_FEATURES=(
     "docs"
 )
 MESON_SRC_CONFIGURE_OPTION_SWITCHES=(
     "ime"
 )
+
+src_install()
+{
+    meson_src_install
+    sed 's/@default_terminfo@/foot/g' "${MESON_SOURCE}/foot.info" | \
+        tic -o "${IMAGE}/usr/share/terminfo" -x -e foot,foot-direct -
+}

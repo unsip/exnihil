@@ -43,6 +43,7 @@ DEPENDENCIES="
 MESON_SOURCE="${WORKBASE}/${PN}"
 MESON_SRC_CONFIGURE_PARAMS=(
     "-Dterminfo=disabled"
+    "-Dcustom-terminfo-install-location=/usr/share/terminfo"
 )
 MESON_SRC_CONFIGURE_OPTION_FEATURES=(
     "docs"

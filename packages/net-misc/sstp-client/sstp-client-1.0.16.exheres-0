@@ -1,0 +1,36 @@
+# Copyright 2021 Andrey Turbov <unsip@tutamail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="A client implementation of Secure Socket Tunneling Protocol (SSTP)."
+DESCRIPTION="
+SSTP is Microsofts Remote Access Solution (RAS) for PPP over SSL. It can be used instead of PPTP or
+L2TP, and is only available with Windows Vista/7 connecting to a Windows 2008 Server. The advantage
+of SSTP compared to PPTP and L2TP is that it cannot be easily blocked by firewalls since the traffic
+is transmitted over HTTPS on port 443.
+"
+HOMEPAGE="http://sstp-client.sourceforge.net/"
+DOWNLOADS="https://sourceforge.net/projects/sstp-client/files/sstp-client/sstp-client-${PV}.tar.gz"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+        virtual/pkg-config
+    build+run:
+        dev-libs/libevent
+        dev-libs/openssl
+        net-dialup/ppp
+        user/sstpc
+        group/sstpc
+"
+
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+    --enable-ppp-plugin
+    --enable-group=sstpc
+    --enable-user=sstpc
+    --with-runtime-dir='/run/sstpc'
+)
+

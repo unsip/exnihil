@@ -1,0 +1,30 @@
+# Copyright 2021 Andrey Turbov <unsip@tutamail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="NetworkManager client for the proprietary Microsoft Secure Socket Tunneling Protocol (SSTP)."
+HOMEPAGE="https://sourceforge.net/projects/sstp-client/"
+DOWNLOADS="https://sourceforge.net/projects/sstp-client/files/network-manager-sstp/NetworkManager-sstp-${PV}.tar.bz2"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64"
+
+DEPENDENCIES="
+    build:
+        dev-util/intltool
+        sys-devel/gettext
+        virtual/pkg-config
+    build+run:
+        dev-libs/glib
+        net-apps/NetworkManager
+        net-dialup/ppp
+        net-misc/sstp-client
+"
+
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+    --disable-more-warnings
+    --disable-static
+    --without-libnm-glib
+    --without-gnome
+)
+

@@ -21,10 +21,16 @@ DEPENDENCIES="
         net-misc/sstp-client
 "
 
-DEFAULT_SRC_CONFIGURE_PARAMS=(
-    --disable-more-warnings
-    --disable-static
-    --without-libnm-glib
-    --without-gnome
-)
+src_configure()
+{
+    local PPPD_VERSION="$(echo $(best_version net-dialup/ppp) | sed -e 's:net-dialup/ppp-\(.*\):\1:' -e 's:-r.*$::')"
+    local confargs=(
+        --disable-more-warnings
+        --disable-static
+        --without-libnm-glib
+        --without-gnome
+        --with-pppd-plugin-dir="/usr/$(exhost --target)/lib/pppd/${PPPD_VERSION}"
+    )
 
+    econf "${confargs[@]}"
+}

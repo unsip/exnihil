@@ -1,0 +1,13 @@
+# Copyright 2021 Andrey Turbov <unsip@tutamail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require github [ user='dandavison' ] cargo
+
+SUMMARY="A syntax-highlighter for git and diff output."
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64"
+
+DEPENDENCIES=""
+

@@ -1,34 +1,30 @@
 # Copyright 2020 Danilo Spinella <danyspin97@protonmail.com>
-# Copyright 2021 Andrey Turbov <unsip@tutamail.com>
+# Copyright 2021-2022 Andrey Turbov <unsip@tutamail.com>
 # Distributed under the terms of the GNU General Public License v2
 
 require github [ user='jtheoof' tag=v${PV} ] meson
 
 SUMMARY="Grab images from a Wayland compositor."
+DESCRIPTION="
+A Wayland native snapshot and editor tool, inspired by Snappy on macOS. Works great with grim, slurp
+and sway. But can easily work with other screen copy tools that can output a final image to stdout.
+"
 
 LICENCES="MIT"
 SLOT="0"
 PLATFORMS="~amd64"
-MYOPTIONS="
-    libnotify
-"
 
 DEPENDENCIES="
     build:
         app-doc/scdoc
     build+run:
+        dev-libs/glib:2
         x11-libs/cairo
         x11-libs/gtk+[>=3.20.0]
         x11-libs/pango
-        libnotify? ( x11-libs/libnotify )
 "
 
 MESON_SRC_CONFIGURE_PARAMS=(
     -Dman-pages=enabled
-)
-
-
-MESON_SRC_CONFIGURE_OPTION_FEATURES=(
-    libnotify
 )
 

@@ -1,0 +1,19 @@
+# Copyright 2022 Andrey Turbov <unsip@tutamail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require github [ user='bitcoin-core' pn='secp256k1' ]
+
+SUMMARY="Optimized C library for ECDSA signatures and secret/public key operations on curve secp256k1."
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+src_configure()
+{
+    ./autogen.sh
+    econf --enable-experimental --enable-module-recovery
+}

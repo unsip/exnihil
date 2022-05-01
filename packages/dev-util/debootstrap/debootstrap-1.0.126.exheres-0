@@ -1,0 +1,46 @@
+# Copyright 2022 Andrey Turbov <unsip@tutamail.com>
+# Copyright 2010 Timothy Redaelli <timothy@redaelli.eu>
+# Distributed under the terms of the GNU General Public License v2
+# Based in part upon 'debootstrap-1.0.20.ebuild' from Gentoo, which is:
+#     Copyright 1999-2010 Gentoo Foundation
+
+require debian-upstream [ debian_pv="${PV}+nmu1" suffix=tar.gz ]
+
+SUMMARY="Debian/Ubuntu bootstrap scripts"
+HOMEPAGE="https://tracker.debian.org/pkg/${PN}"
+DOWNLOADS+=" mirror://gentoo/devices.tar.gz"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~arm ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        app-arch/dpkg
+        net-misc/wget
+        sys-devel/binutils
+"
+
+src_unpack() {
+    unpack ${PN}_${PV}+nmu1.tar.gz
+    cp "${FETCHEDDIR}"/devices.tar.gz "${WORK}"
+    rm "${PN}-${PV}"
+    mv "${PN}-${PV}+nmu1" "${PN}-${PV}"
+}
+
+src_compile() {
+    :
+}
+
+src_install() {
+    default
+
+    # no support for filesystem layouts different from debians :/
+    edo mkdir -p "${IMAGE}"/usr/$(exhost --target)/bin
+    edo mv "${IMAGE}"/usr/{sbin,$(exhost --target)/bin}/debootstrap
+    edo rmdir "${IMAGE}"/usr/sbin
+
+    doman debootstrap.8
+}
+

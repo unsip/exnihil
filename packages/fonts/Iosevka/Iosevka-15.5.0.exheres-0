@@ -1,0 +1,26 @@
+# Copyright 2022 Andrey Turbov <unsip@tutamail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+MY_PNV="ttf-iosevka-${PV}"
+require github [ user='be5invis' release="v${PV}" suffix='zip' ] xfont
+
+SUMMARY="A font for programming, terminals and technical documents."
+DESCRIPTION="
+Iosevka is an open-source, sans-serif + slab-serif, monospace + quasi‑proportional typeface family,
+designed for writing code, using in terminals, and preparing technical documents.
+"
+HOMEPAGE="https://typeof.net/Iosevka/"
+
+LICENCES="OFL-1.1"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+WORK="${WORKBASE}"
+
+src_install() {
+    insinto /usr/share/fonts/X11/${PN}
+    doins *.ttf
+}

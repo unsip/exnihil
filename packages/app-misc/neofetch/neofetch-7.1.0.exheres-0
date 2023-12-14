@@ -1,11 +1,14 @@
 # Copyright 2018 Danilo Spinella <danyspin97@protonmail.com>
-# Copyright 2021 Andrey Turbov <unsip@tutamail.com>
+# Copyright 2023 Andrey Turbov <unsip@tutamail.com>
 # Distributed under the terms of the GNU General Public License v2
 
 require github [ user='dylanaraps' ]
 
 SUMMARY="A fast, highly customizable system info script"
-DESCRIPTION="Neofetch is a CLI system information tool written in BASH. Neofetch displays information about your system next to an image, your OS logo, or any ASCII file of your choice."
+DESCRIPTION="
+Neofetch is a CLI system information tool written in BASH. Neofetch displays information about your
+system next to an image, your OS logo, or any ASCII file of your choice.
+"
 
 LICENCES="MIT"
 SLOT="0"

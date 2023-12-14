@@ -1,0 +1,40 @@
+From 8047d6db99a5c61985f3f7459165dc477052e693 Mon Sep 17 00:00:00 2001
+From: Danilo Spinella <danyspin97@protonmail.com>
+Date: Mon, 7 May 2018 22:04:27 +0200
+Subject: [PATCH] Fix library link to dependencies
+Upstream: Merged in development branch
+
+---
+ meson.build | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/meson.build b/meson.build
+index 3b0d7b7..f54e13b 100644
+--- a/meson.build
++++ b/meson.build
+@@ -21,8 +21,21 @@ glib = dependency('glib-2.0')
+ cairo = dependency('cairo')
+ mupdf = cc.find_library('mupdf')
+ mupdfthird = cc.find_library('mupdfthird')
++libjpeg = dependency('libjpeg')
++libjbig2dec = cc.find_library('libjbig2dec')
++libopenjp2 = dependency('libopenjp2')
+ 
+-build_dependencies = [zathura, girara, glib, cairo, mupdf, mupdfthird]
++build_dependencies = [
++  zathura,
++  girara,
++  glib,
++  cairo,
++  mupdf,
++  mupdfthird,
++  libjpeg,
++  libjbig2dec,
++  libopenjp2
++]
+ 
+ # defines
+ defines = [
+-- 
+2.17.0
+

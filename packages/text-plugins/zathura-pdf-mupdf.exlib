@@ -1,0 +1,52 @@
+# Copyright 2012, 2013 Johannes Nixdorf <mixi@exherbo.org>
+# Distributed under the terms of the GNU General Public License v2
+
+require pwmt meson
+
+SUMMARY="A plugin adds PDF support to zathura by using the mupdf rendering library"
+
+LICENCES="ZLIB"
+SLOT="0"
+MYOPTIONS="
+    ( providers: ijg-jpeg jpeg-turbo ) [[ number-selected = exactly-one ]]
+    ( providers: libressl openssl ) [[ number-selected = exactly-one ]]
+"
+
+# Dependencies on libjpeg, libjbig2dec, libopenjp2 and libcrypto are indirect
+# (come from mupdf). However, due to mupdf package lacking pkg-config file,
+# those libraries are expicitly added to the linker flags in Makefile.
+DEPENDENCIES="
+    build:
+        virtual/pkg-config
+    build+run:
+        app-text/mupdf[>=1.12]
+        app-text/zathura[>=0.3.9]
+        dev-libs/glib:2
+        media-libs/OpenJPEG:2
+        media-libs/jbig2dec
+        x11-libs/cairo
+        x11-libs/girara[>=0.2.0]
+        x11-libs/gtk+:3
+        providers:ijg-jpeg? (
+            media-libs/jpeg:=
+        )
+        providers:jpeg-turbo? (
+            media-libs/libjpeg-turbo
+        )
+        providers:libressl? (
+            dev-libs/libressl:=
+        )
+        providers:openssl? (
+            dev-libs/openssl:=
+        )
+
+        !text-plugins/zathura-pdf-poppler [[ description = [ They both provide colliding PDF plugins for zathura ]
+                                             note = [ They collide in /usr/host/lib/zathura/pdf.so ] ]]
+"
+
+# TODO (danyspin97): When removing this patch,
+# enable meson option "link-external"
+DEFAULT_SRC_PREPARE_PATCHES=(
+    "${FILES}"/0001-Fix-library-link-to-dependencies.patch
+)
+

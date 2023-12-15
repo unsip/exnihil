@@ -1,0 +1,40 @@
+# Copyright 2012 Johannes Nixdorf <mixi@exherbo.org>
+# Distributed under the terms of the GNU General Public License v2
+
+require pwmt meson
+
+SUMMARY="A library that implements a user interface that focuses on simplicity and minimalism"
+
+LICENCES="ZLIB"
+SLOT="0"
+MYOPTIONS="
+    libnotify
+"
+
+DEPENDENCIES="
+    build:
+        dev-util/intltool
+        virtual/pkg-config
+    build+run:
+        dev-libs/glib:2[>=2.50]
+        dev-libs/json-c:=
+        x11-libs/gtk+:3[>=3.20]
+        x11-libs/pango[>=1.14]
+        libnotify? ( x11-libs/libnotify[>=0.7.0] )
+    test:
+        dev-libs/check
+"
+
+MESON_SRC_CONFIGURE_PARAMS=(
+    -Ddocs=disabled
+    -Djson=enabled
+)
+
+MESON_SRC_CONFIGURE_OPTION_SWITCHES=(
+    'libnotify notify enabled disabled'
+)
+
+MESON_SRC_CONFIGURE_TESTS=(
+    "-Dtests=enabled -Dtests=disabled"
+)
+

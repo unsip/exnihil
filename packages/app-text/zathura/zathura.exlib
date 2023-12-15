@@ -1,0 +1,51 @@
+# Copyright 2012 Johannes Nixdorf <mixi@exherbo.org>
+# Copyright 2010 Jonathan Dahan <jedahan@gmail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require pwmt meson
+
+SUMMARY="Highly customizable and functional PDF viewer based on poppler/GTK+"
+
+LICENCES="ZLIB"
+SLOT="0"
+MYOPTIONS="
+    doc [[ description = [ Generate manual pages ] ]]
+    seccomp [[ description = [ Enable experimental seccomp support ] ]]
+    sqlite [[ description = [ Support sqlite databases ] ]]
+"
+
+DEPENDENCIES="
+    build:
+        gnome-desktop/librsvg               [[ description = [ Convert icon to PNG ] ]]
+        virtual/pkg-config
+        doc? ( dev-python/Sphinx[python_abis:*(-)?] ) [[ description = [ Necessary to build man-pages ] ]]
+    build+run:
+        dev-libs/glib:2[>=2.50]
+        sys-apps/file                       [[ description = [ Support mimetype detection with libmagic ] ]]
+        x11-libs/cairo
+        x11-libs/girara[>=0.4.1]
+        x11-libs/gtk+:3[>=3.22]
+        seccomp? ( sys-libs/libseccomp )
+        sqlite? ( dev-db/sqlite:3[>=3.6.23] )
+    test:
+        dev-libs/appstream-glib             [[ description = [ Validate desktop files with appstream-util ] ]]
+        dev-libs/check
+    recommendation:
+        virtual/zathura-pdf                 [[ description = [ Used to view PDF documents ] ]]
+    suggestion:
+        text-plugins/zathura-djvu           [[ description = [ Used to view djvu documents ] ]]
+        text-plugins/zathura-ps             [[ description = [ Used to view postscript documents ] ]]
+        text-plugins/zathura-cb             [[ description = [ Used to view comic books ] ]]
+"
+
+MESON_SRC_CONFIGURE_PARAMS=(
+    -Dconvert-icon=enabled
+    -Dsynctex=disabled
+)
+
+MESON_SRC_CONFIGURE_OPTION_SWITCHES=(
+    'doc manpages enabled disabled'
+    'seccomp seccomp enabled disabled'
+    'sqlite sqlite enabled disabled'
+)
+

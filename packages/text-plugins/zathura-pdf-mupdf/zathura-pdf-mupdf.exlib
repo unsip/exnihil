@@ -45,13 +45,7 @@ DEPENDENCIES="
                                              note = [ They collide in /usr/host/lib/zathura/pdf.so ] ]]
 "
 
+# Add required deps to build. Otherwise fails with undefined symbols error.
 DEFAULT_SRC_PREPARE_PATCHES=(
     "${FILES}"/0001-Fix-undefined-symbols.patch
 )
-
-# TODO (danyspin97): When removing this patch,
-# enable meson option "link-external"
-#DEFAULT_SRC_PREPARE_PATCHES=(
-#    "${FILES}"/0001-Fix-library-link-to-dependencies.patch
-#)
-

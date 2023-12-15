@@ -1,0 +1,25 @@
+diff --git a/meson.build b/meson.build
+index 8ac0565..462ac0c 100644
+--- a/meson.build
++++ b/meson.build
+@@ -22,11 +22,20 @@ cairo = dependency('cairo')
+ mupdf = dependency('mupdf', required: false)
+ mupdfthird = cc.find_library('mupdf-third')
+ 
++libjpeg = dependency('libjpeg')
++libjbig2dec = cc.find_library('jbig2dec')
++libopenjp2 = dependency('libopenjp2')
++gumbo = dependency('gumbo')
++
+ build_dependencies = [
+   zathura,
+   girara,
+   glib,
+   cairo,
++  libjpeg,
++  libjbig2dec,
++  gumbo,
++  libopenjp2
+ ]
+ 
+ if not mupdf.found()

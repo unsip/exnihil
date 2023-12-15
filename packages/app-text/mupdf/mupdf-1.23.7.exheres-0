@@ -1,0 +1,7 @@
+# Copyright 2011 Elias Pipping <pipping@exherbo.org>
+# Distributed under the terms of the GNU General Public License v2
+
+require mupdf
+
+PLATFORMS="~amd64"
+

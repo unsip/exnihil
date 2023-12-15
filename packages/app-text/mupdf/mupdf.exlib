@@ -1,0 +1,115 @@
+# Copyright 2011 Elias Pipping <pipping@exherbo.org>
+# Distributed under the terms of the GNU General Public License v2
+
+MY_PNV=${PNV}-source
+
+require flag-o-matic freedesktop-desktop
+
+export_exlib_phases pkg_setup src_prepare src_install
+
+SUMMARY="Lightweight PDF, XPS, EPUB and CBZ viewer and parser/rendering library"
+DESCRIPTION="
+The renderer in MuPDF is tailored for high quality anti-aliased graphics. It
+renders text with metrics and spacing accurate to within fractions of a pixel
+for the highest fidelity in reproducing the look of a printed page on screen.
+
+MuPDF is also small, fast, and yet complete. It supports PDF 1.7 with
+transparency, encryption, hyperlinks, annotations, search and many other bells
+and whistles. MuPDF can also read XPS documents (OpenXPS / ECMA-388),
+EPUB and CBZ (Comic Book archive) files.
+
+MuPDF is written to be both modular and portable; the example applications
+are merely thin layers on top of the functionality offered by the library,
+so custom viewers can be easily built for a wide range of platforms. Example
+viewer applications are supplied for Windows, Linux, MacOS, iOS and Android.
+
+MuPDF is deliberately designed to be threading library agnostic, while still
+supporting multi-threaded operation. In the absence of a thread library
+it will run single-threaded, but by adding one significant benefits in
+rendering speed on multi-core platforms can be obtained.
+"
+HOMEPAGE="https://mupdf.com"
+DOWNLOADS="${HOMEPAGE}/downloads/archive/${MY_PNV}.tar.gz"
+
+LICENCES="AGPL-3"
+SLOT="0"
+MYOPTIONS="
+    ( providers: ijg-jpeg jpeg-turbo ) [[ number-selected = exactly-one ]]
+    ( providers: libressl openssl ) [[ number-selected = exactly-one ]]
+"
+
+# TODO: Check internal libs, cfr Arch PKGBUILD
+DEPENDENCIES="
+    build:
+        virtual/pkg-config
+    build+run:
+        dev-libs/gumbo
+        dev-libs/libglvnd
+        dev-libs/mujs
+        media-libs/OpenJPEG:2[>=2.1.0]
+        media-libs/freetype:2
+        media-libs/jbig2dec
+        net-misc/curl
+        sys-libs/zlib
+        x11-libs/harfbuzz
+        x11-libs/libX11
+        x11-libs/libXext
+        x11-libs/libXrandr [[ note = [ required by bundled freeglut ] ]]
+        providers:ijg-jpeg? ( media-libs/jpeg:= )
+        providers:jpeg-turbo? ( media-libs/libjpeg-turbo )
+        providers:libressl? ( dev-libs/libressl:=[>=2.7] )
+        providers:openssl? ( dev-libs/openssl:= )
+"
+
+# additional x11-dri/freeglut dependencies
+# bundled patched version required for clipboard and unicode support
+DEPENDENCIES+="
+    build:
+        x11-dri/glu
+    build+run:
+        x11-libs/libXi
+        x11-libs/libXrandr
+        x11-libs/libXxf86vm
+"
+
+DEFAULT_SRC_COMPILE_PARAMS=(
+    verbose=yes
+    USE_SYSTEM_GLUT=no
+    USE_SYSTEM_LIBS=yes
+    USE_TESSERACT=no
+    MUJS_LIBS="-lmujs"
+)
+WORK=${WORKBASE}/${MY_PNV}
+
+mupdf_pkg_setup() {
+    append-flags -fPIC
+}
+
+mupdf_src_prepare() {
+    edo sed -e 's/pkg-config/\${PKG_CONFIG}/' \
+            -i Makerules
+
+    default
+}
+
+mupdf_src_install() {
+    local MY_PARAMS=(
+        prefix="${IMAGE}"/usr/$(exhost --target)
+        mandir="${IMAGE}"/usr/share/man/
+        docdir="${IMAGE}"/usr/share/doc/${PNVR}
+        verbose=yes
+        USE_SYSTEM_GLUT=no
+        USE_SYSTEM_LIBS=yes
+        USE_TESSERACT=no
+        MUJS_LIBS="-lmujs"
+    )
+    emake install "${MY_PARAMS[@]}"
+
+    insinto /usr/share/applications
+    doins "${FILES}"/${PN}.desktop
+
+    insinto /usr/share/icons/hicolor/scalable/apps
+    newins docs/logo/mupdf-logo.svg mupdf.svg
+    newins docs/logo/mupdf-logo.svg mupdf-gl.svg
+}
+

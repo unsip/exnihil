@@ -1,0 +1,16 @@
+[Desktop Entry]
+Name=MuPDF
+GenericName=PDF file viewer
+Exec=mupdf-x11 %f
+TryExec=mupdf-x11
+Icon=mupdf
+Terminal=false
+Type=Application
+MimeType=application/pdf;application/x-pdf;application/x-cbz;application/epub+zip
+Categories=Viewer;
+Actions=View
+NoDisplay=true
+
+[Desktop Action View]
+Name=View with mupdf
+Exec=mupdf-x11 %f

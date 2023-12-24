@@ -1,0 +1,19 @@
+# Copyright 2023 Andrey Turbov <unsip@tutamail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require github [ user='GhostNaN' ] meson
+
+SUMMARY="Wallpaper program for wlroots based wayland compositors, such as sway. That allows you to
+play videos with mpv as your wallpaper."
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        media/mpv
+        sys-libs/wlroots
+"
+

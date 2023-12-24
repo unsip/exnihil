@@ -1,0 +1,20 @@
+# Copyright 2019 Danilo Spinella <danyspin97@protonmail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require github [ user='ammen99' tag=v${PV} ] meson
+
+SUMMARY="A utility program for screen recording of wlroots-based compositors."
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        media/ffmpeg
+        media-libs/x264
+        sys-libs/wayland
+        sys-libs/wayland-protocols
+"
+

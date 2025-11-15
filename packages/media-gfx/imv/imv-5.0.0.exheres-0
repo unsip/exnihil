@@ -50,7 +50,6 @@ MESON_SOURCE="${WORKBASE}"/${PN}-v${PV}
 
 MESON_SRC_CONFIGURE_PARAMS=(
     # Unpackaged dependencies
-    -Dfreeimage=disabled
     -Dlibnsgif=disabled
 )
 

@@ -28,7 +28,7 @@ DEPENDENCIES="
         app-doc/asciidoc
         dev-util/cmocka [[ note = [ Used to build the tests ] ]]
     build+run:
-        dev-libs/icu
+        dev-libs/icu:=[>=77.1]
         dev-libs/inih
         x11-dri/mesa[X]
         x11-libs/libxkbcommon[X?]
@@ -50,7 +50,6 @@ MESON_SOURCE="${WORKBASE}"/${PN}-v${PV}
 
 MESON_SRC_CONFIGURE_PARAMS=(
     # Unpackaged dependencies
-    -Dfreeimage=disabled
     -Dlibnsgif=disabled
 )
 

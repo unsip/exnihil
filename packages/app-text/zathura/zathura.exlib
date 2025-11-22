@@ -20,11 +20,11 @@ DEPENDENCIES="
         virtual/pkg-config
         doc? ( dev-python/Sphinx[python_abis:*(-)?] ) [[ description = [ Necessary to build man-pages ] ]]
     build+run:
-        dev-libs/glib:2[>=2.50]
+        dev-libs/glib:2[>=2.76]
         sys-apps/file                       [[ description = [ Support mimetype detection with libmagic ] ]]
         x11-libs/cairo
-        x11-libs/girara[>=0.4.1]
-        x11-libs/gtk+:3[>=3.22]
+        x11-libs/girara[>=0.4.5]
+        x11-libs/gtk+:3[>=3.24]
         seccomp? ( sys-libs/libseccomp )
         sqlite? ( dev-db/sqlite:3[>=3.6.23] )
     test:
@@ -46,6 +46,5 @@ MESON_SRC_CONFIGURE_PARAMS=(
 MESON_SRC_CONFIGURE_OPTION_SWITCHES=(
     'doc manpages enabled disabled'
     'seccomp seccomp enabled disabled'
-    'sqlite sqlite enabled disabled'
 )
 

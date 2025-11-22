@@ -48,4 +48,5 @@ DEPENDENCIES="
 # Add required deps to build. Otherwise fails with undefined symbols error.
 DEFAULT_SRC_PREPARE_PATCHES=(
     "${FILES}"/0001-Fix-undefined-symbols.patch
+    "${FILES}"/0002-Register-PDF-mimetype.patch
 )

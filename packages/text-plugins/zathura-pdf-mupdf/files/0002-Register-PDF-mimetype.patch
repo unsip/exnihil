@@ -1,0 +1,12 @@
+diff --git a/zathura-pdf-mupdf/plugin.c b/zathura-pdf-mupdf/plugin.c
+index 3312fd0..85ef08a 100644
+--- a/zathura-pdf-mupdf/plugin.c
++++ b/zathura-pdf-mupdf/plugin.c
+@@ -31,6 +31,7 @@ ZATHURA_PLUGIN_REGISTER_WITH_FUNCTIONS("pdf-mupdf", VERSION_MAJOR, VERSION_MINOR
+                                        ZATHURA_PLUGIN_MIMETYPES({
+                                            PDF_MIMETYPE "application/oxps",
+                                            "application/epub+zip",
++                                           "application/pdf",
+                                            "application/x-fictionbook",
+                                            "application/x-mobipocket-ebook",
+                                            "text/xml",

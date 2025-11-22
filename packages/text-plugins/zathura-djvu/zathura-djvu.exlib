@@ -1,0 +1,22 @@
+# Copyright 2012 Vadim Intelegator <intelegator@gmail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require pwmt meson
+
+SUMMARY="A plugin that adds DjVu support to zathura"
+
+LICENCES="ZLIB"
+SLOT="0"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+        virtual/pkg-config
+    build+run:
+        app-text/djvu
+        app-text/zathura[>=0.3.8]
+        dev-libs/glib:2[>=2.0]
+        x11-libs/cairo
+        x11-libs/girara[>=0.1.8]
+"
+

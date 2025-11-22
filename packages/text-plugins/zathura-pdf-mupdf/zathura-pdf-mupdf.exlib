@@ -26,7 +26,7 @@ DEPENDENCIES="
         media-libs/OpenJPEG:2
         media-libs/jbig2dec
         x11-libs/cairo
-        x11-libs/girara[>=0.4.1]
+        x11-libs/girara[>=0.4.5]
         x11-libs/gtk+:3
         providers:ijg-jpeg? (
             media-libs/jpeg:=

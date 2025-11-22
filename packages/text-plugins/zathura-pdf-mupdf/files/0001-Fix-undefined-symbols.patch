@@ -1,15 +1,18 @@
 diff --git a/meson.build b/meson.build
-index 8ac0565..462ac0c 100644
+index 0ce1b1f..e9481fb 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -22,11 +22,20 @@ cairo = dependency('cairo')
- mupdf = dependency('mupdf', required: false)
- mupdfthird = cc.find_library('mupdf-third')
+@@ -25,11 +25,26 @@ glib = dependency('glib-2.0')
+ cairo = dependency('cairo')
+ mupdf = dependency('mupdf', required: false, version: '>=@0@.@1@'.format(mupdf_required_version_major, mupdf_required_version_minor))
  
 +libjpeg = dependency('libjpeg')
 +libjbig2dec = cc.find_library('jbig2dec')
 +libopenjp2 = dependency('libopenjp2')
 +gumbo = dependency('gumbo')
++brotli_cm = dependency('libbrotlicommon')
++brotli_enc = dependency('libbrotlienc')
++brotli_dec = dependency('libbrotlidec')
 +
  build_dependencies = [
    zathura,
@@ -19,7 +22,10 @@ index 8ac0565..462ac0c 100644
 +  libjpeg,
 +  libjbig2dec,
 +  gumbo,
-+  libopenjp2
++  libopenjp2,
++  brotli_cm,
++  brotli_enc,
++  brotli_dec
  ]
  
  if not mupdf.found()

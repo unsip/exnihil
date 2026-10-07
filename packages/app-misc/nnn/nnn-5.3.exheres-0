@@ -1,0 +1,104 @@
+# Copyright 2018-2020 Danilo Spinella <danyspin97@protonmail.com>
+# Copyright 2021 Andrey Turbov <unsip@tutamail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require github [ user=jarun tag=v${PV} ]
+
+SUMMARY="The fastest terminal file manager ever written."
+DESCRIPTION="It's extremely flexible - integrates with your DE and favourite
+    GUI utilities, works with the desktop opener, supports bookmarks, has smart
+    navigation shortcuts, navigate-as-you-type mode, disk usage analyzer mode,
+    comprehensive file details and much more."
+
+LICENCES="BSD-2"
+SLOT="0"
+PLATFORMS="~amd64"
+
+MYOPTIONS="
+    X [[ description = [ Enable desktop integration for clipboard, notifications and terminal titles ] ]]
+    batch [[ description = [ Enable the built-in batch renamer ] ]]
+    benchmark [[ description = [ Exit after startup for benchmarking ] ]]
+    colemak [[ description = [ Use Colemak-compatible key bindings ] ]]
+    debug [[ description = [ Enable upstream debug logging ] ]]
+    dimfiltered [[ description = [ Dim characters matching the filter ] ]]
+    gitstatus [[ description = [ Show Git status in the detail view ] ]]
+    locale [[ description = [ Enable locale support ] ]]
+    mouse [[ description = [ Enable mouse support ] ]]
+    namefirst [[ description = [ Show file names first and user/group columns in the detail view ] ]]
+    pcre [[ description = [ Use PCRE2 for regular expression matching ] ]]
+    qsort [[ description = [ Use the bundled optimized qsort implementation ] ]]
+    readline
+    restorepreview [[ description = [ Restore the preview pane after running an editor ] ]]
+    (
+        icons [[ description = [ Use icons-in-terminal glyphs; requires a matching font at runtime ] ]]
+        nerd [[ description = [ Use Nerd Font glyphs; requires a matching font at runtime ] ]]
+        emoji [[ description = [ Use emoji icons ] ]]
+    ) [[ number-selected = at-most-one requires = [ locale ] ]]
+"
+
+DEPENDENCIES="
+    build:
+        virtual/pkg-config
+    build+run:
+        sys-libs/ncurses
+        pcre? ( dev-libs/pcre2 )
+        readline? ( sys-libs/readline:= )
+    run:
+        x11-apps/xdg-utils
+        gitstatus? ( dev-scm/git )
+"
+
+nnn_make() {
+    local build_cflags=$(exhost --build)
+    build_cflags=${build_cflags//-/_}_CFLAGS
+    local args=(
+        PKG_CONFIG=$(exhost --tool-prefix)pkg-config
+        HOST_CC=$(exhost --build)-cc
+        HOST_CFLAGS="${!build_cflags}"
+        CFLAGS_OPTIMIZATION=
+        PATCH_OPTS=--merge
+        # Always compile in these runtime-controlled features (O_NO*=0 enables support).
+        O_NOFIFO=0
+        O_NOSSN=0
+        O_NOUG=0
+        O_NOSORT=0
+        $(option debug O_DEBUG=1 O_DEBUG=0)
+        $(option readline O_NORL=0 O_NORL=1)
+        $(option pcre O_PCRE2=1 O_PCRE2=0)
+        $(option locale O_NOLC=0 O_NOLC=1)
+        $(option mouse O_NOMOUSE=0 O_NOMOUSE=1)
+        $(option batch O_NOBATCH=0 O_NOBATCH=1)
+        $(option icons O_ICONS=1 O_ICONS=0)
+        $(option nerd O_NERD=1 O_NERD=0)
+        $(option emoji O_EMOJI=1 O_EMOJI=0)
+        $(option qsort O_QSORT=1 O_QSORT=0)
+        $(option benchmark O_BENCH=1 O_BENCH=0)
+        $(option X O_NOX11=0 O_NOX11=1)
+        $(option dimfiltered O_DIMFILTERED=1 O_DIMFILTERED=0)
+        $(option colemak O_COLEMAK=1 O_COLEMAK=0)
+        $(option gitstatus O_GITSTATUS=1 O_GITSTATUS=0)
+        $(option namefirst O_NAMEFIRST=1 O_NAMEFIRST=0)
+        $(option restorepreview O_RESTOREPREVIEW=1 O_RESTOREPREVIEW=0)
+        # Exherbo's gpm package does not provide the archive required by O_STATIC.
+        O_STATIC=0
+    )
+
+    emake "${args[@]}" "${@}"
+}
+
+src_compile() {
+    nnn_make
+}
+
+src_install() {
+    local args=(
+        PREFIX=/usr/$(exhost --target)
+        MANPREFIX=/usr/share/man
+        DESKTOPPREFIX=/usr/share/applications
+        DESKTOPICONPREFIX=/usr/share/icons/hicolor
+    )
+
+    nnn_make install install-desktop DESTDIR="${IMAGE}" "${args[@]}"
+
+    emagicdocs
+}

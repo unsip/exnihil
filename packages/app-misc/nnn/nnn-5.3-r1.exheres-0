@@ -3,6 +3,8 @@
 # Distributed under the terms of the GNU General Public License v2
 
 require github [ user=jarun tag=v${PV} ]
+require bash-completion
+require zsh-completion
 
 SUMMARY="The fastest terminal file manager ever written."
 DESCRIPTION="It's extremely flexible - integrates with your DE and favourite
@@ -101,4 +103,7 @@ src_install() {
     nnn_make install install-desktop DESTDIR="${IMAGE}" "${args[@]}"
 
     emagicdocs
+
+    dobashcompletion misc/auto-completion/bash/"${PN}-completion.bash"
+    dozshcompletion misc/auto-completion/zsh/"_${PN}"
 }
